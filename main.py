@@ -1,38 +1,80 @@
-import metodo
+import sqlite3
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import ttk
 
-# Atividade 1
 
-print("atividade 1:")
-print(metodo.atividade1())
+def criar_banco():
+    return  sqlite3.connect('nome.db')
 
-# Atividade 2 
 
-print("\natividade 2:")
-print(metodo.atividade2())
+def inserir_bd():
+    c  = criar_banco()
+    cursor =  c.cursor()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro(
 
-# Atividade 3
+                    nome TEXT NOT NULL,
+                    idade INTERGER NOT NULL
+                        
 
-print("\natividade 3:")
-print(metodo.atividade3())
+                    )""")
+    c.commit()
+    try:
+        nome_  =  nome.get()
+        idade_ = idade.get()
+        cursor.execute("INSERT INTO cadastro VALUES(?, ?)", (nome_, idade_))
+        c.commit() 
+        messagebox.showinfo('', 'dados inseridos')
 
-# Atividade 4
+        cursor.execute('SELECT * FROM  cadastro')
+        dados_  =  cursor.fetchall()
+        dados.config(text = dados_)
+    except:
+        messagebox.showerror('', 'ocorreu um erro')    
+    
 
-print("\natividade 4:")
-metodo.atividade4()
 
-# Atividade 5
 
-print("\natividade 5:")
-num = int(input("Digite um número positivo: "))
-print("Soma dos pares:", metodo.atividade5(num))
 
-# Atividade 6
+    # y = [
+    # ['a', 25],
+    # ['b', 30]
 
-print("\natividade 6:")
-num = int(input("Digite um número para ver a tabuada: "))
-metodo.atividade6(num)
+    # ]
 
-# Atividade 7
+    # cursor.executemany("INSERT INTO cadastro VALUES(?, ?)", y)
+    # c.commit() 
 
-print("\natividade 7:")
-metodo.atividade7()
+
+ 
+
+    # for d in dados:
+    #     print('nome: ', d[0], 'idade', d[1])
+
+
+
+root  =  tk.Tk()
+
+root.geometry('300x300')
+
+tk.Label(root, text= 'nome').pack()
+
+nome  =  tk.Entry(root)
+nome.pack()
+
+
+tk.Label(root, text= 'idade').pack()
+idade  =  tk.Entry(root)
+idade.pack()
+
+
+btn = tk.Button(root, text='inserir', command= inserir_bd )
+btn.pack(pady= 10)
+
+
+dados = tk.Label(root, text='')
+dados.pack(pady=10)
+
+
+
+root.mainloop()
